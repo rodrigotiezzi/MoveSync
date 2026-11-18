@@ -116,7 +116,9 @@ semaforo-inteligente/
 │   └── templates/dev/   # Painel de testes (Thymeleaf)
 ├── simulador/           # Simulador de sensores (substitui o ESP32)
 ├── docker-compose.yml   # RabbitMQ com plugins de gerenciamento e MQTT
-└── Dockerfile
+├── dockerfiles/        # Dockerfile.api e Dockerfile.rabbitmq
+├── scripts/            # infra-azure.sh, delete-infra.sh e script-bd.sql (Azure)
+└── azure-pipeline.yml  # Pipeline de CI (Azure DevOps)
 ```
 
 ---

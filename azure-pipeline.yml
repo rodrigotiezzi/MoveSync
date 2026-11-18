@@ -1,0 +1,58 @@
+# =====================================================================================
+# MoveSync - Pipeline de CI (Azure Pipelines / YAML)
+# Roda a cada merge na branch master: Java 21 -> Maven (build + testes) -> artefato ROOT.war
+# A Release (CD) faz o deploy do ROOT.war no Web App (Tomcat 10.1 / Java 21).
+# =====================================================================================
+
+trigger:
+  branches:
+    include:
+      - master
+
+pr: none
+
+pool:
+  vmImage: ubuntu-latest
+
+variables:
+  javaVersion: '21'
+  mavenPom: 'pom.xml'
+  artifactName: 'drop'
+
+steps:
+  - task: JavaToolInstaller@0
+    displayName: 'Configurar Java $(javaVersion)'
+    inputs:
+      versionSpec: '$(javaVersion)'
+      jdkArchitectureOption: 'x64'
+      jdkSourceOption: 'PreInstalled'
+
+  - task: Maven@3
+    displayName: 'Maven: build + testes (JUnit 5)'
+    inputs:
+      mavenPomFile: '$(mavenPom)'
+      goals: 'clean verify'
+      publishJUnitResults: true
+      testResultsFiles: '**/surefire-reports/TEST-*.xml'
+
+  - task: PublishCodeCoverageResults@2
+    displayName: 'Publicar cobertura (JaCoCo)'
+    condition: succeededOrFailed()
+    inputs:
+      summaryFileLocation: 'target/site/jacoco/jacoco.xml'
+
+  - task: CopyFiles@2
+    displayName: 'Copiar ROOT.war e scripts'
+    inputs:
+      SourceFolder: '$(System.DefaultWorkingDirectory)'
+      Contents: |
+        target/ROOT.war
+        scripts/**
+      TargetFolder: '$(Build.ArtifactStagingDirectory)'
+
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publicar artefato $(artifactName)'
+    inputs:
+      PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+      ArtifactName: '$(artifactName)'
+      publishLocation: 'Container'

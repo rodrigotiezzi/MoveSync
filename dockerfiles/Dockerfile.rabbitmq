@@ -1,0 +1,6 @@
+# RabbitMQ do MoveSync com os plugins de gerenciamento e MQTT (sensores/ESP32)
+#   docker build -f dockerfiles/Dockerfile.rabbitmq -t movesync-rabbitmq .
+# No Azure ele roda em um Azure Container Instance (ACI), criado por /scripts/infra-azure.sh
+FROM rabbitmq:3.13-management
+COPY docker/enabled_plugins /etc/rabbitmq/enabled_plugins
+EXPOSE 5672 15672 1883
