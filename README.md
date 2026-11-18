@@ -48,15 +48,9 @@ RUNTIME="TOMCAT:11.0-java21"
 # Banco de Dados (Azure SQL)
 SQL_SERVER_NAME="sqlserver-movesync"
 SQL_DB_NAME="movesyncdb"
-SQL_ADMIN_USER="dbadmin"
+SQL_ADMIN_USER=""
 SQL_ADMIN_PASSWORD=""
 
-# Usuários da aplicação
-ADMIN_USERNAME="admin"
-ADMIN_PASSWORD=""
-OPERADOR_USERNAME="operador"
-OPERADOR_PASSWORD=""
-JWT_SECRET=""
 ```
 
 > **Regiões:** a assinatura Azure for Students só permite `eastus2`, `mexicocentral`, `centralus`, `southafricanorth` e `canadacentral` (consulte com `az policy assignment list --query "[].parameters" -o json`). O Web App fica em **East US 2** (única com cota de B1) e o banco em **Central US**.
