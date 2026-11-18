@@ -1,17 +1,49 @@
 # ☁️ Deploy na Azure — MoveSync
 
-## 📌 Descrição da Solução
+# 🚦 Semáforo Inteligente — CitizenTech
 
-A ideia principal do **MoveSync** é um sistema de **semáforos inteligentes com IoT**: sensores e câmeras instalados nos cruzamentos leem o fluxo de veículos e pedestres e o sistema **ajusta o tempo de verde** de cada semáforo conforme o trânsito real — fazendo com que o cidadão passe menos tempo parado no semáforo.
+Backend desenvolvido com Java e Spring Boot para a **Global Solution 2026 2°SEM FIAP**.
+O sistema recebe leituras de sensores de trânsito (quantidade de veículos e tamanho da fila por via), decide qual via abrir e por quanto tempo, e **explica a decisão ao cidadão com IA generativa (Spring AI)**. O cidadão também pode **reportar problemas** no cruzamento (semáforo apagado, travessia insegura, falta de acessibilidade), que a IA classifica e prioriza para o gestor de trânsito.
 
-Para sustentar essa proposta, foi desenvolvida uma **API RESTful em Java com Spring Boot**, com persistência em **Azure SQL Database**, que funciona como o back-end de gestão da solução: centraliza o cadastro de **cruzamentos**, **semáforos** e **dispositivos IoT** (câmeras e sensores), vincula os dispositivos a cada semáforo, registra as **leituras de tráfego** (quantidade de veículos, pedestres e velocidade média) e calcula os **ajustes de tempo** — guardando o histórico de cada ajuste (tempo anterior, tempo novo, média de veículos e motivo).
+A mesma API é consumida pelo app Mobile (React Native) da solução e oferece:
 
-A regra do ajuste usa a média das 5 últimas leituras do semáforo: **verde = 15 s + 1,5 s por veículo**, sempre entre **15 s e 90 s**.
+- **API RESTful** protegida por **JWT**, com dois perfis (`CIDADAO` e `GESTOR`) e documentada com Swagger.
+- **Mensageria com RabbitMQ**: as leituras são publicadas como evento e processadas de forma assíncrona.
+- **IA generativa (Spring AI)** integrada ao fluxo: explica cada decisão do semáforo e classifica os relatos dos cidadãos.
+- **Painel de testes** (Thymeleaf) em `/dev`, para simular sensores e testar o fluxo inteiro sem montar requisições à mão.
 
-> ⚠️ **Os dados de IoT são fictícios.** Não há hardware real: as leituras são geradas pelo **simulador** (`POST /leitura/simular` ou botão *Simular leituras* no painel) e pelos dados de exemplo do `scripts/script-bd.sql`.
+---
 
-A solução expõe endpoints REST documentados via **Swagger/OpenAPI**, com suporte a busca por parâmetros, paginação e ordenação de resultados, validação de dados de entrada e tratamento global de exceções — cobrindo todo o fluxo, do cadastro do cruzamento até o ajuste automático do semáforo.
+## 🎯 O problema e o cidadão
 
+Semáforos de tempo fixo dão o mesmo tempo de verde para uma rua vazia e para uma avenida congestionada, o que gera **horas perdidas no trânsito**, mais poluição e atraso para quem precisa de passagem rápida.
+
+**Quem é beneficiado:** motoristas, motociclistas, passageiros de transporte público, pedestres e serviços de emergência.
+
+**Como a solução ajuda:**
+
+- O semáforo se adapta à demanda real de cada via e dá prioridade a veículos de emergência.
+- Se um sensor sai do ar, o sistema volta sozinho ao tempo fixo (modo seguro), sem "congelar" o cruzamento.
+- O cidadão **vê a situação do cruzamento e entende o motivo da decisão** em linguagem simples.
+- O cidadão **reporta problemas** e o gestor recebe a fila de relatos já classificada por categoria e gravidade.
+
+**ODS relacionado:** ODS 11 — Cidades e comunidades sustentáveis.
+
+---
+
+## 👥 MoveSync — 2TDSPO
+
+--------------------------------
+|         Nome        |   RM   |
+|---------------------|--------|
+| Bruno A Zanateli    | 563736 |
+| Christian S Freitas | 566098 |
+| Pedro P Biasolli    | 562521 |
+| Rodrigo Tiezzi      | 562975 |
+| Maheus E Souza      | 562532 |
+--------------------------------
+
+---
 ## 💼 Descrição dos Benefícios para o Negócio
 
 - **Menos tempo parado no trânsito**: o tempo de verde acompanha o fluxo real de cada via, em vez de um ciclo fixo.
