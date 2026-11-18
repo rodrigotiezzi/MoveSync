@@ -82,6 +82,7 @@ SQL_SERVER_NAME="sqlserver-movesync"
 SQL_DB_NAME="movesyncdb"
 SQL_ADMIN_USER=""
 SQL_ADMIN_PASSWORD=""
+JWT_SECRET=""
 
 ```
 
