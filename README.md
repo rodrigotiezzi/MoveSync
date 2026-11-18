@@ -57,7 +57,7 @@ Semáforos de tempo fixo dão o mesmo tempo de verde para uma rua vazia e para u
 ---
 
 ## Arquitetura
-<img width="1690" height="931" alt="arquitetura-movesync" src="https://github.com/user-attachments/assets/42c61036-5779-45eb-89a3-aa34c512d921" />
+<img width="1800" height="1080" alt="arquitetura-movesync (2)" src="https://github.com/user-attachments/assets/afc88ef7-7a0c-41dc-b09b-5ba5674d23f3" />
 
 ---
 
